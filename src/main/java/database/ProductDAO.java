@@ -262,9 +262,53 @@ public class ProductDAO implements DAOInterface<Product>{
         return nextId;
     }
 	
+	//=========BỔ SUNG - Homepage=====
+	public ArrayList<Product> selectByCategoryId(String categoryId) {
+		ArrayList<Product> ketQua = new ArrayList<Product>();
+		try {
+			// Bước 1: Tạo kết nối
+			Connection con = JDBCUtil.getConnection();
+			
+			// Bước 2: Tạo đối tượng statement
+			String sql = "SELECT * FROM product WHERE categoryid = ?";
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, categoryId);
+			
+			// Bước 3: Thực thi câu lệnh SQL
+			ResultSet rs = st.executeQuery();
+			
+			// Bước 4: Xử lý kết quả
+			while(rs.next()) {
+				String productId = rs.getString("productid");
+				String productName = rs.getString("productname");
+				String productImage = rs.getString("productimage");
+				int productQuantity = rs.getInt("productquantity");
+				int productCost = rs.getInt("productcost");
+				String categoryIdDb = rs.getString("categoryid");
+				String brandId = rs.getString("brandid");
+				String productDescription = rs.getString("productdescription");
+				
+				Brand brand = new BrandDAO().selectById(new Brand(brandId, "", "", ""));
+				Category category = new CategoryDAO().selectById(new Category(categoryIdDb, ""));
+				
+				Product product = new Product(productId, productName, productImage, productQuantity,
+						productCost, category, brand, productDescription);
+				ketQua.add(product);
+			}
+			
+			// Bước 5: Đóng kết nối
+			JDBCUtil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ketQua;
+	}
+
+	
+	
 	public static void main(String[] args) {
 		ProductDAO bd = new ProductDAO();
-		ArrayList<Product> kq = bd.selectAll();
+		ArrayList<Product> kq = bd.selectByCategoryId("C010");
 		for (Product product : kq) {
 			System.out.println(product.toString());
 		}
