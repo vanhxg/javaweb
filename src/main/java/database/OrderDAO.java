@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 
 import model.Customer;
+import model.DetailOrder;
 import model.Order;
 
 public class OrderDAO implements DAOInterface<Order>{
@@ -126,65 +127,57 @@ public class OrderDAO implements DAOInterface<Order>{
 		return 0;
 	}
 
-//	@Override
-//	public Order selectById(Order t) {
-//		for (Order order : data) {
-//			if(data.equals(t)) {
-//				return order;
-//			}
-//		}
-//		return null;
-//	}
-//
-//	@Override
-//	public int insert(Order t) {
-//		if(this.selectById(t) == null) {
-//			this.data.add(t);
-//			return 1;
-//		}
-//		return 0;
-//	}
-//
-//	@Override
-//	public int insertAll(ArrayList<Order> arr) {
-//		int count = 0;
-//		for (Order order : arr) {
-//			count += this.insert(order);
-//		}
-//		return count;
-//	}
-//
-//	@Override
-//	public int delete(Order t) {
-//		if(this.selectById(t) != null) {
-//			// B1:Xóa chi tiết đơn hàng -> B2: Xóa đơn hàng
-//			DetailOrderDAO dtod = new DetailOrderDAO();
-//			dtod.deleteAll(t);
-//			
-//			this.data.remove(t);
-//			return 1;
-//		}
-//		return 0;
-//	}
-//
-//	@Override
-//	public int deleteAll(ArrayList<Order> arr) {
-//		int count = 0;
-//		for (Order order : arr) {
-//			count += this.delete(order);
-//		}
-//		return count;
-//	}
-//
-//	@Override
-//	public int update(Order t) {
-//		if(this.selectById(t) != null) {
-//			this.data.remove(t);
-//			this.data.add(t);
-//			return 1;
-//		}
-//		return 0;
-//	}
+	public static void saveOrder(Order order) {
+	        Connection conn = null;
+	        PreparedStatement stmt = null;
+
+	        try {
+	            conn = JDBCUtil.getConnection();
+	            String sql = "INSERT INTO orders (orderId, customerId, deliveryAddress, orderState, paymentMethod, createDate, deliveryDate) " +
+	                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	            stmt = conn.prepareStatement(sql);
+	            stmt.setString(1, order.getOrderId());
+	            stmt.setString(2, order.getCustomer().getCustomerId());
+	            stmt.setString(3, order.getDeliveryAddress());
+	            stmt.setString(4, order.getOrderState());
+	            stmt.setString(5, order.getPaymentMethod());
+	            stmt.setDate(6, new java.sql.Date(order.getCreateDate().getTime()));
+	            stmt.setDate(7, new java.sql.Date(order.getDeliveryDate().getTime()));
+
+	            stmt.executeUpdate();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            JDBCUtil.closeConnection(conn);
+	        }
+		
+	}
+	public static void saveOrderDetail(DetailOrder detail) {
+		    Connection conn = null;
+		    PreparedStatement stmt = null;
+
+		    try {
+		        conn = JDBCUtil.getConnection();
+
+		        String sql = "INSERT INTO detailorders (detailOrderId, orderId, productId, quantityOrder, totalPrice) " +
+		                     "VALUES (?, ?, ?, ?, ?)";
+
+		        stmt = conn.prepareStatement(sql);
+		        stmt.setString(1, detail.getDetailOrderId());
+		        stmt.setString(2, detail.getOrder().getOrderId());
+		        stmt.setString(3, detail.getProduct().getProductId());
+		        stmt.setInt(4, detail.getQuantityOrder());
+		        stmt.setInt(5, detail.getTotalPrice());
+
+		        stmt.executeUpdate();
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    } finally {
+		    	JDBCUtil.closeConnection(conn);
+		    }
+
+		
+	}
 	
 	// Hàm cập nhật trạng thái và ngày giao hàng
 	public int updateOrderStatus(String orderId, String orderState, Date deliveryDate) {

@@ -6,151 +6,119 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import model.Brand;
 import model.Category;
 
-public class CategoryDAO implements DAOInterface<Category>{
-	//private ArrayList<Category> data = new ArrayList<>();
+public class CategoryDAO implements DAOInterface<Category> {
 	
 	@Override
 	public ArrayList<Category> selectAll() {
-		ArrayList<Category> ketQua = new ArrayList<Category>();
+		ArrayList<Category> result = new ArrayList<>();
 		try {
-			// Bước 1: tạo kết nối đến CSDL
 			Connection con = JDBCUtil.getConnection();
-
-			// Bước 2: tạo ra đối tượng statement
+			
 			String sql = "SELECT * FROM category";
 			PreparedStatement st = con.prepareStatement(sql);
-
-			// Bước 3: thực thi câu lệnh SQL
+			
 			System.out.println(sql);
 			ResultSet rs = st.executeQuery();
-
-			// Bước 4: xử lý kết quả 
-			while (rs.next()) {
+			
+			while(rs.next()) {
 				String categoryId = rs.getString("categoryid");
 				String categoryName = rs.getString("categoryname");
-
+				
 				Category category = new Category(categoryId, categoryName);
-				ketQua.add(category);
+				result.add(category);
 			}
-
-			// Bước 5: ngắt kết nối
+			
 			JDBCUtil.closeConnection(con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return ketQua;
+		return result;
 	}
 
 	@Override
 	public Category selectById(Category t) {
-		Category ketQua = null;
+		Category result = null;
 		try {
-			// Bước 1: tạo kết nối đến CSDL
 			Connection con = JDBCUtil.getConnection();
-
-			// Bước 2: tạo ra đối tượng statement
+			
 			String sql = "SELECT * FROM category WHERE categoryid=?";
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, t.getCategoryId());
-
-			// Bước 3: thực thi câu lệnh SQL
+			
 			System.out.println(sql);
 			ResultSet rs = st.executeQuery();
-
-			// Bước 4: xử lý kết quả 
-			while (rs.next()) {
+			
+			if(rs.next()) {
 				String categoryId = rs.getString("categoryid");
 				String categoryName = rs.getString("categoryname");
-
-				ketQua = new Category(categoryId, categoryName);
-				break;
+				
+				result = new Category(categoryId, categoryName);
 			}
-			// Bước 5: ngắt kết nối
+			
 			JDBCUtil.closeConnection(con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return ketQua;
+		return result;
 	}
 
 	@Override
 	public int insert(Category t) {
-		int ketQua = 0;
+		int result = 0;
 		try {
-			// Bước 1: tạo kết nối đến CSDL
 			Connection con = JDBCUtil.getConnection();
 			
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "INSERT INTO category (categoryid, categoryname) "+
-					" VALUES (?,?)";
+			String sql = "INSERT INTO category (categoryid, categoryname) VALUES (?,?)";
 			
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, t.getCategoryId());
 			st.setString(2, t.getCategoryName());
 			
-			// Bước 3: thực thi câu lệnh SQL
-			ketQua = st.executeUpdate();
+			result = st.executeUpdate();
 			
-			// Bước 4:
 			System.out.println("Bạn đã thực thi: "+ sql);
-			System.out.println("Có "+ ketQua+" dòng bị thay đổi!");
+			System.out.println("Có "+ result +" dòng bị thay đổi!");
 			
-			// Bước 5:
 			JDBCUtil.closeConnection(con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return ketQua;
+		return result;
 	}
 
 	@Override
 	public int insertAll(ArrayList<Category> arr) {
 		int count = 0;
 		for (Category category : arr) {
-			count+=this.insert(category);
+			count += this.insert(category);
 		}
 		return count;
 	}
 
 	@Override
 	public int delete(Category t) {
-		int ketQua = 0;
+		int result = 0;
 		try {
-			// Bước 1: tạo kết nối đến CSDL
 			Connection con = JDBCUtil.getConnection();
 			
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "DELETE from category "+
-					 " WHERE categoryid=?";
+			String sql = "DELETE FROM category WHERE categoryid=?";
 			
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, t.getCategoryId());
 			
-			// Bước 3: thực thi câu lệnh SQL
 			System.out.println(sql);
-			ketQua = st.executeUpdate();
+			result = st.executeUpdate();
 			
-			// Bước 4:
 			System.out.println("Bạn đã thực thi: "+ sql);
-			System.out.println("Có "+ ketQua+" dòng bị thay đổi!");
+			System.out.println("Có "+ result +" dòng bị thay đổi!");
 			
-			// Bước 5:
 			JDBCUtil.closeConnection(con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return ketQua;
+		return result;
 	}
 
 	@Override
@@ -164,47 +132,62 @@ public class CategoryDAO implements DAOInterface<Category>{
 
 	@Override
 	public int update(Category t) {
-		int ketQua = 0;
+		int result = 0;
 		try {
-			// Bước 1: tạo kết nối đến CSDL
 			Connection con = JDBCUtil.getConnection();
 			
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "UPDATE category "+
-					 " SET " +
-					 " categoryname=?"+
-					 " WHERE categoryid=?";
+			String sql = "UPDATE category SET categoryname=? WHERE categoryid=?";
 			
 			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getCategoryId());
-			st.setString(2, t.getCategoryName());
-			// Bước 3: thực thi câu lệnh SQL
-
+			st.setString(1, t.getCategoryName());
+			st.setString(2, t.getCategoryId());
+			
 			System.out.println(sql);
-			ketQua = st.executeUpdate();
+			result = st.executeUpdate();
 			
-			// Bước 4:
 			System.out.println("Bạn đã thực thi: "+ sql);
-			System.out.println("Có "+ ketQua+" dòng bị thay đổi!");
+			System.out.println("Có "+ result +" dòng bị thay đổi!");
 			
-			// Bước 5:
 			JDBCUtil.closeConnection(con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return ketQua;
+		return result;
 	}
 	
-//	public static void main(String[] args) {
-//		CategoryDAO cd = new CategoryDAO();
-//		ArrayList<Category> kq = cd.selectAll();
-//		for (Category category : kq) {
-//			System.out.println(category.toString());
-//		}
-//
-//		 
-//	}
+	// Hàm tự sinh ra mã category
+	public String generateNextCategoryId() {
+		String nextId = "C001"; // giá trị mặc định nếu bảng rỗng
+
+		try {
+			Connection con = JDBCUtil.getConnection();
+
+			String sql = "SELECT categoryId FROM category ORDER BY categoryId DESC LIMIT 1";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				String lastId = rs.getString("categoryId"); // VD: C015
+				int nextNum = Integer.parseInt(lastId.substring(1)) + 1;
+				nextId = String.format("C%03d", nextNum); // VD: C016
+			}
+
+			JDBCUtil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Lỗi khi sinh mã danh mục mới!");
+		}
+
+		return nextId;
+	}
 	
+	public static void main(String[] args) {
+		CategoryDAO dao = new CategoryDAO();
+		
+		ArrayList<Category> categories = dao.selectAll();
+		for (Category category : categories) {
+			System.out.println(category);
+		}
+		
+	}
 }

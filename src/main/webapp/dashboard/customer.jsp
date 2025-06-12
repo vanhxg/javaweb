@@ -108,6 +108,9 @@
 									data-bs-toggle="modal" data-bs-target="#addCustomerModal">
 									<i class="ri-add-circle-fill"> Thêm mới</i>
 								</button>
+								<a href="${pageContext.request.contextPath}/trash" class="btn btn-danger ms-2">
+        <i class="ri-delete-bin-line"></i> Thùng rác
+    </a>
 							</div>
 
 							<!-- Table with stripped rows -->
@@ -182,6 +185,7 @@
 									</c:forEach>
 								</tbody>
 							</table>
+
 
 							<!-- Modal Thêm tài khoản -->
 							<div class="modal fade" id="addCustomerModal" tabindex="-1"
@@ -570,8 +574,8 @@
 								aria-labelledby="deleteCustomerModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-dialog-centered modal-md">
 									<div class="modal-content border-0 shadow-lg rounded-4">
-										<form action="deleteCustomer" method="post"
-											id="deleteCustomerForm">
+										<form action="deleteCustomer" method="post" id="deleteCustomerForm">
+											
 											<div class="modal-header bg-danger text-white rounded-top-4">
 												<h5 class="modal-title" id="deleteCustomerModalLabel">
 													<i class="ri-delete-bin-line me-2"></i>Xác nhận xóa tài

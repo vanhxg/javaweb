@@ -8,6 +8,8 @@ public class DetailOrder {
 	private Product product;
 	private int quantityOrder;
 	private int totalPrice;
+	private String productName;
+	private String productImage;
 	
 	public DetailOrder() {
 		super();
@@ -62,6 +64,22 @@ public class DetailOrder {
 		this.totalPrice = totalPrice;
 	}
 
+	
+	//Bổ sung
+	public String getProductName() {
+	    return productName;
+	}
+	public void setProductName(String productName) {
+	    this.productName = productName;
+	}
+
+	public String getProductImage() {
+	    return productImage;
+	}
+	public void setProductImage(String productImage) {
+	    this.productImage = productImage;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(detailOrderId);
@@ -84,7 +102,7 @@ public class DetailOrder {
 		return "DetailOrder [detailOrderId=" + detailOrderId + ", order=" + order + ", product=" + product
 				+ ", quantityOrder=" + quantityOrder + ", totalPrice=" + totalPrice + "]";
 	}
-	
-	
+
+
 	
 }

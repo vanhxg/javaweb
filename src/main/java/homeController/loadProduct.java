@@ -33,8 +33,17 @@ public class loadProduct extends HttpServlet {
 		ArrayList<Product> accessories = dao.selectByCategoryId("C010");
 		System.out.println("Số phụ kiện tìm thấy: " + accessories.size());
 
+		
+		ArrayList<Product> newestProducts = dao.selectNewestProducts(6); 
+		
+		ArrayList<Product> allProducts = dao.selectAllByProductIdAscLimit(10);
+		
 		// 1. Gửi request lên server:
 		request.setAttribute("accessories", accessories);
+		request.setAttribute("newestProducts", newestProducts);
+		request.setAttribute("allProducts", allProducts);
+
+		
 		
 		// 2. Chuyển dữ liệu từ server lên trang giao diện brand.jsp:
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/homepage/home.jsp");

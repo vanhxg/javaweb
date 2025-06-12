@@ -95,7 +95,7 @@
                             <!-- Logo -->
                             <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3">
                                 <div class="logo">
-                                  <a href="${pageContext.request.contextPath}/homepage/home.jsp"><img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt=""></a>
+                                  <a href="${pageContext.request.contextPath}/home"><img src="${pageContext.request.contextPath}/assets/img/logo/logo.png" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-8 col-md-7 col-sm-5">
@@ -103,7 +103,7 @@
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>                                                
                                         <ul id="navigation">                                                                                                                                     
-                                            <li><a href="${pageContext.request.contextPath}/homepage/home.jsp">Trang chủ</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
 	                                        <li><a href="nam.html">Nam</a></li>
 	                                        <li><a href="nu.html">Nữ</a></li>
 	                                        <li><a href="phu-kien.html">Phụ kiện</a></li>
@@ -135,7 +135,7 @@
                                     </li>
                                     <li>
                                         <div class="shopping-card">
-                                            <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                                            <a href="${pageContext.request.contextPath}/cart"><i class="fas fa-shopping-cart"></i></a>
                                         </div>
                                     </li>
                                    	<li class="d-none d-lg-block user-menu-item">

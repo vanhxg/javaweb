@@ -11,7 +11,7 @@ public class Product {
 	private Category category;
 	private Brand brand;
 	private String productDescription;
-	
+
 	public Product() {
 		super();
 	}

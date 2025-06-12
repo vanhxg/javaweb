@@ -1,44 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Product - NHOM 9</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+<title>Quản lý sản phẩm</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link href="${pageContext.request.contextPath}/assets/adimgs/favicon.png" rel="icon">
-  <link href="${pageContext.request.contextPath}/assets/adimgs/apple-touch-icon.png" rel="apple-touch-icon">
+<!-- Favicons -->
+<link
+	href="${pageContext.request.contextPath}/assets/adimgs/favicon.png"
+	rel="icon">
+<link
+	href="${pageContext.request.contextPath}/assets/adimgs/apple-touch-icon.png"
+	rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.gstatic.com" rel="preconnect">
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+	rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="${pageContext.request.contextPath}/assets/adcss/bootstrap.min.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/assets/adcss/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+<!-- Vendor CSS Files -->
+<link
+	href="${pageContext.request.contextPath}/assets/adcss/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/assets/adcss/bootstrap-icons/bootstrap-icons.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/assets/vendor/boxicons/css/boxicons.min.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/assets/vendor/quill/quill.snow.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/assets/vendor/quill/quill.bubble.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/assets/vendor/remixicon/remixicon.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/assets/vendor/simple-datatables/style.css"
+	rel="stylesheet">
 
-  <!-- Template Main CSS File -->
-  <link href="${pageContext.request.contextPath}/assets/adcss/style.css" rel="stylesheet">
+<!-- Template Main CSS File -->
+<link href="${pageContext.request.contextPath}/assets/adcss/style.css"
+	rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -86,11 +101,10 @@
 										<th>Ảnh</th>
 										<th>Số lượng</th>
 										<th>Giá bán</th>
-										<th>Tên danh mục</th>
-										<th>Tên nhà cung cấp</th>
 										<th>Mô tả</th>
 										<th>Thực hiện</th>
-										
+										<!-- <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
+                    <th>Completion</th> -->
 									</tr>
 								</thead>
 								<tbody>
@@ -103,8 +117,6 @@
 												style="width: 80px; height: auto;" /></td>
 											<td>${product.productQuantity}</td>
 											<td>${product.productCost}</td>
-											<td>${product.category.categoryName}</td>
-											<td>${product.brand.brandName}</td>
 											<td
 												style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
 												title="${product.productDescription}">${product.productDescription}</td>
@@ -154,7 +166,8 @@
 								<div class="modal-dialog modal-dialog-centered modal-lg">
 									<div class="modal-content border-0 shadow-lg rounded-4">
 
-										<form action="addProduct" method="post">
+										<form action="addProduct" method="post"
+											enctype="multipart/form-data" id="addProductForm">
 											<div class="modal-header bg-primary text-white rounded-top-4">
 												<h5 class="modal-title" id="addProductModalLabel">
 													<i class="ri-add-box-line me-2"></i>Thêm sản phẩm mới
@@ -180,17 +193,15 @@
 														</div>
 													</div>
 
-													<!-- Ảnh sản phẩm (URL) -->
+													<!-- Ảnh sản phẩm -->
 													<div class="col-md-12">
-														<label for="productImage" class="form-label">Link
-															ảnh sản phẩm</label>
-														<div class="input-group">
-															<span class="input-group-text"><i
-																class="ri-image-line"></i></span> <input type="text"
-																class="form-control" id="productImage"
-																name="productImage" placeholder="Nhập đường dẫn ảnh">
-															<div class="invalid-feedback"></div>
-														</div>
+														<label for="productImage" class="form-label">Ảnh
+															sản phẩm</label> <input type="file" class="form-control"
+															id="productImage" name="productImage" accept="image/*"
+															required />
+														<div class="invalid-feedback"></div>
+														<img id="productImagePreview" src="#" alt="Xem trước ảnh"
+															style="display: none; margin-top: 10px; max-height: 150px;" />
 													</div>
 
 													<!-- Số lượng -->
@@ -219,7 +230,7 @@
 														</div>
 													</div>
 
-													<!-- Mã danh mục -->
+													<!-- Danh mục -->
 													<div class="col-md-6">
 														<label for="categoryId" class="form-label">Danh
 															mục</label>
@@ -236,7 +247,7 @@
 														</div>
 													</div>
 
-													<!-- Mã nhà cung cấp -->
+													<!-- Nhà cung cấp -->
 													<div class="col-md-6">
 														<label for="brandId" class="form-label">Nhà cung
 															cấp</label>
@@ -265,6 +276,7 @@
 												</div>
 											</div>
 
+											<!-- Nút -->
 											<div class="modal-footer px-4 pb-4">
 												<button type="button" class="btn btn-secondary"
 													data-bs-dismiss="modal">
@@ -275,11 +287,40 @@
 												</button>
 											</div>
 										</form>
-
 									</div>
 								</div>
 							</div>
 							<!-- End Form Thêm Mới Sản Phẩm -->
+
+							<!-- SCRIPT xem trước ảnh và reset -->
+							<script>
+	document.getElementById('productImage').addEventListener('change', function (event) {
+		const file = event.target.files[0];
+		const preview = document.getElementById('productImagePreview');
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function (e) {
+				preview.src = e.target.result;
+				preview.style.display = 'block';
+			};
+			reader.readAsDataURL(file);
+		} else {
+			preview.src = '#';
+			preview.style.display = 'none';
+		}
+	});
+
+	// Reset ảnh khi modal bị đóng
+	document.getElementById('addProductModal').addEventListener('hidden.bs.modal', function () {
+		document.getElementById('productImage').value = '';
+		const preview = document.getElementById('productImagePreview');
+		preview.src = '#';
+		preview.style.display = 'none';
+
+		// Optional: reset form
+		document.getElementById('addProductForm').reset();
+	});
+</script>
 
 							<!-- Modal Xem Chi Tiết Sản Phẩm -->
 							<div class="modal fade" id="viewProductModal" tabindex="-1"
@@ -293,8 +334,23 @@
 											<button type="button" class="btn-close btn-close-white"
 												data-bs-dismiss="modal" aria-label="Đóng"></button>
 										</div>
+
 										<div class="modal-body px-4 pt-4">
 											<div class="row g-3">
+
+												<!-- Ảnh sản phẩm -->
+												<div class="col-12 text-center mb-3">
+													<label class="form-label ">Ảnh sản phẩm</label>
+												</div>
+												<div
+													class="col-12 d-flex justify-content-center align-items-center"
+													style="height: 300px;">
+													<img id="viewProductImage" src="#" alt="Ảnh sản phẩm"
+														class="img-thumbnail border border-2 shadow-sm"
+														style="max-height: 250px; object-fit: contain;" />
+												</div>
+
+												<!-- Mã & Tên sản phẩm -->
 												<div class="col-md-6">
 													<label class="form-label">Mã sản phẩm</label>
 													<div class="input-group">
@@ -303,6 +359,7 @@
 															class="form-control" id="viewProductId" readonly>
 													</div>
 												</div>
+
 												<div class="col-md-6">
 													<label class="form-label">Tên sản phẩm</label>
 													<div class="input-group">
@@ -312,6 +369,7 @@
 													</div>
 												</div>
 
+												<!-- Giá & Số lượng -->
 												<div class="col-md-6">
 													<label class="form-label">Giá bán</label>
 													<div class="input-group">
@@ -320,6 +378,7 @@
 															class="form-control" id="viewProductCost" readonly>
 													</div>
 												</div>
+
 												<div class="col-md-6">
 													<label class="form-label">Số lượng</label>
 													<div class="input-group">
@@ -328,16 +387,21 @@
 															class="form-control" id="viewProductQuantity" readonly>
 													</div>
 												</div>
+
+												<!-- Danh mục & Nhà cung cấp -->
 												<div class="col-md-6">
 													<label class="form-label">Danh mục</label> <input
 														type="text" class="form-control" id="viewCategoryName"
 														readonly>
 												</div>
+
 												<div class="col-md-6">
 													<label class="form-label">Nhà cung cấp</label> <input
 														type="text" class="form-control" id="viewBrandName"
 														readonly>
 												</div>
+
+												<!-- Mô tả -->
 												<div class="col-md-12">
 													<label class="form-label">Mô tả</label>
 													<textarea class="form-control" id="viewProductDescription"
@@ -345,6 +409,7 @@
 												</div>
 											</div>
 										</div>
+
 										<div class="modal-footer px-4 pb-4">
 											<button type="button" class="btn btn-secondary"
 												data-bs-dismiss="modal">
@@ -362,7 +427,9 @@
 								aria-labelledby="editProductModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-dialog-centered modal-lg">
 									<div class="modal-content border-0 shadow-lg rounded-4">
-										<form action="editProduct" method="post">
+										<!-- Thêm enctype để hỗ trợ upload file -->
+										<form action="editProduct" method="post"
+											enctype="multipart/form-data">
 											<div class="modal-header bg-warning text-white rounded-top-4">
 												<h5 class="modal-title" id="editProductModalLabel">
 													<i class="ri-edit-line me-2"></i>Chỉnh sửa sản phẩm
@@ -373,7 +440,12 @@
 											<div class="modal-body px-4 pt-4">
 												<input type="hidden" name="action" value="edit" /> <input
 													type="hidden" id="editProductId" name="productId" />
+												<!-- Hidden field chứa đường dẫn ảnh cũ để gửi lên server -->
+												<input type="hidden" id="editOldImage" name="oldImage" />
+
 												<div class="row g-3">
+
+													<!-- Tên sản phẩm -->
 													<div class="col-md-12">
 														<label for="editProductName" class="form-label">Tên
 															sản phẩm</label>
@@ -381,24 +453,34 @@
 															<span class="input-group-text"><i
 																class="ri-shopping-bag-line"></i></span> <input type="text"
 																class="form-control" id="editProductName"
-																name="productName" placeholder="Nhập tên sản phẩm">
+																name="productName" placeholder="Nhập tên sản phẩm" />
 															<div class="invalid-feedback"></div>
 														</div>
 													</div>
+
+													<!-- Phần Ảnh sản phẩm (preview ảnh hiện tại hoặc ảnh upload mới) -->
+													<div class="col-md-12 text-center mb-3">
+														<label class="form-label fw-bold">Ảnh sản phẩm</label>
+													</div>
+													<div
+														class="col-md-12 d-flex justify-content-center align-items-center mb-3"
+														style="height: 300px;">
+														<img id="editProductImagePreview" src="#"
+															alt="Ảnh sản phẩm"
+															class="img-thumbnail border border-2 shadow-sm"
+															style="max-height: 250px; object-fit: contain;" />
+													</div>
+
+													<!-- Input upload file ảnh -->
 													<div class="col-md-12">
-														<label for="editProductImage" class="form-label">Liên
-															kết ảnh</label>
-														<div class="input-group">
-															<span class="input-group-text"><i
-																class="ri-image-line"></i></span> <input type="text"
-																class="form-control" id="editProductImage"
-																name="productImage" placeholder="Nhập URL ảnh sản phẩm">
-															<div class="invalid-feedback"></div>
-														</div>
-
+														<label for="editProductImage" class="form-label">Chọn
+															ảnh mới (nếu muốn thay đổi)</label> <input type="file"
+															class="form-control" id="editProductImage"
+															name="productImage" accept="image/*" />
+														<div class="invalid-feedback"></div>
 													</div>
 
-
+													<!-- Giá bán -->
 													<div class="col-md-6">
 														<label for="editProductCost" class="form-label">Giá
 															bán</label>
@@ -406,10 +488,12 @@
 															<span class="input-group-text"><i
 																class="ri-money-dollar-box-line"></i></span> <input
 																type="number" class="form-control" id="editProductCost"
-																name="productCost">
+																name="productCost" />
 															<div class="invalid-feedback"></div>
 														</div>
 													</div>
+
+													<!-- Số lượng -->
 													<div class="col-md-6">
 														<label for="editProductQuantity" class="form-label">Số
 															lượng</label>
@@ -417,10 +501,12 @@
 															<span class="input-group-text"><i
 																class="ri-stack-line"></i></span> <input type="number"
 																class="form-control" id="editProductQuantity"
-																name="productQuantity">
+																name="productQuantity" />
 															<div class="invalid-feedback"></div>
 														</div>
 													</div>
+
+													<!-- Danh mục -->
 													<div class="col-md-6">
 														<label for="editCategoryId" class="form-label">Danh
 															mục</label> <select class="form-select" id="editCategoryId"
@@ -430,6 +516,8 @@
 															</c:forEach>
 														</select>
 													</div>
+
+													<!-- Nhà cung cấp -->
 													<div class="col-md-6">
 														<label for="editBrandId" class="form-label">Nhà
 															cung cấp</label> <select class="form-select" id="editBrandId"
@@ -440,6 +528,7 @@
 														</select>
 													</div>
 
+													<!-- Mô tả -->
 													<div class="col-md-12">
 														<label for="editProductDescription" class="form-label">Mô
 															tả</label>
@@ -462,6 +551,7 @@
 								</div>
 							</div>
 
+							<!-- End Modal sửa Sản Phẩm -->
 
 							<!-- Modal Xóa Sản Phẩm -->
 							<div class="modal fade" id="deleteProductModal" tabindex="-1"
@@ -599,9 +689,7 @@
     		const brandId = form.brandId;
     		const productDescription = form.productDescription;
 
-    		function isValidURL(str) {
-    		  	return /^(https?:\/\/.+\.(jpg|jpeg|png|gif|webp)|\/.+\.(jpg|jpeg|png|gif|webp)|\.\/.+\.(jpg|jpeg|png|gif|webp)|\.\.\/.+\.(jpg|jpeg|png|gif|webp)|[^\/]+\.(jpg|jpeg|png|gif|webp))$/i.test(str.trim());
-    		}
+    		
 
     		// Reset các lỗi cũ
     		[productName, productImage, productQuantity, productCost, categoryId, brandId, productDescription].forEach(input => {
@@ -615,17 +703,6 @@
       			isValid = false;
       			productName.classList.add("is-invalid");
       			productName.closest(".input-group").querySelector(".invalid-feedback").textContent = "Vui lòng nhập tên sản phẩm.";
-    		}
-
-    		// Kiểm tra link ảnh (bắt buộc và hợp lệ)
-    		if (productImage.value.trim() === "") {
-      			isValid = false;
-      			productImage.classList.add("is-invalid");
-      			productImage.closest(".input-group").querySelector(".invalid-feedback").textContent = "Vui lòng nhập link ảnh sản phẩm.";
-    		} else if (!isValidURL(productImage.value.trim())) {
-      			isValid = false;
-      			productImage.classList.add("is-invalid");
-      			productImage.closest(".input-group").querySelector(".invalid-feedback").textContent = "Link ảnh không hợp lệ.";
     		}
 
     		// Kiểm tra số lượng (phải >= 0)
@@ -677,137 +754,153 @@
 	</script>
 	<!-- JS cho chức năng xem -->
 	<script>
-		const viewProductModal = document.getElementById('viewProductModal');
-		viewProductModal.addEventListener('show.bs.modal', function(event) {
+	document.addEventListener("DOMContentLoaded", function () {
+		const viewModal = document.getElementById('viewProductModal');
+		viewModal.addEventListener('show.bs.modal', function (event) {
 			const button = event.relatedTarget;
+			const imageUrl = button.getAttribute('data-image');
 
-			document.getElementById('viewProductId').value = button
-					.getAttribute('data-id');
-			document.getElementById('viewProductName').value = button
-					.getAttribute('data-name');
-			document.getElementById('viewProductCost').value = button
-					.getAttribute('data-cost');
-			document.getElementById('viewProductQuantity').value = button
-					.getAttribute('data-quantity');
-			document.getElementById('viewCategoryName').value = button
-					.getAttribute('data-category-name');
-			document.getElementById('viewBrandName').value = button
-					.getAttribute('data-brand-name');
-			document.getElementById('viewProductDescription').value = button
-					.getAttribute('data-description');
+			const imagePreview = document.getElementById('viewProductImage');
+			if (imageUrl) {
+				imagePreview.src = imageUrl;
+				imagePreview.style.display = 'block';
+			} else {
+				imagePreview.style.display = 'none';
+			}
+
+			// Gán các thông tin khác nếu chưa có
+			document.getElementById('viewProductId').value = button.getAttribute('data-id');
+			document.getElementById('viewProductName').value = button.getAttribute('data-name');
+			document.getElementById('viewProductCost').value = button.getAttribute('data-cost');
+			document.getElementById('viewProductQuantity').value = button.getAttribute('data-quantity');
+			document.getElementById('viewCategoryName').value = button.getAttribute('data-category-name');
+			document.getElementById('viewBrandName').value = button.getAttribute('data-brand-name');
+			document.getElementById('viewProductDescription').value = button.getAttribute('data-description');
 		});
-	</script>
+	});
+</script>
+
 
 	<!-- JS cho chức năng sửa -->
 	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-  			const editModal = document.getElementById("editProductModal");
-  			const editForm = editModal.querySelector("form");
+document.addEventListener("DOMContentLoaded", function () {
+  const editModal = document.getElementById("editProductModal");
+  const editForm = editModal.querySelector("form");
+  const editProductImageInput = document.getElementById("editProductImage");
+  const editProductImagePreview = document.getElementById("editProductImagePreview");
+  const editOldImageInput = document.getElementById("editOldImage");
 
-  				// Khi modal được mở, đẩy dữ liệu từ nút vào input
-  			editModal.addEventListener("show.bs.modal", function (event) {
-    			const button = event.relatedTarget;
+  // Khi modal được mở, đẩy dữ liệu từ nút vào input và preview ảnh
+  editModal.addEventListener("show.bs.modal", function (event) {
+    const button = event.relatedTarget;
 
-    			// Lấy dữ liệu từ thuộc tính data-*
-    			document.getElementById("editProductId").value = button.getAttribute("data-id");
-    			document.getElementById("editProductName").value = button.getAttribute("data-name");
-    			document.getElementById("editProductImage").value = button.getAttribute("data-image");
-    			document.getElementById("editProductQuantity").value = button.getAttribute("data-quantity");
-    			document.getElementById("editProductCost").value = button.getAttribute("data-cost");
-    			document.getElementById("editCategoryId").value = button.getAttribute("data-category");
-    			document.getElementById("editBrandId").value = button.getAttribute("data-brand");
-    			document.getElementById("editProductDescription").value = button.getAttribute("data-description");
-  		});
+    document.getElementById("editProductId").value = button.getAttribute("data-id");
+    document.getElementById("editProductName").value = button.getAttribute("data-name");
 
- 	 	// Validate form khi submit
-  		editForm.addEventListener("submit", function (e) {
-    		let isValid = true;
+    // Lưu ảnh cũ vào hidden input
+    const oldImage = button.getAttribute("data-image") || '';
+    editOldImageInput.value = oldImage;
 
-    		// Các input
-    		const productName = editForm.productName;
-    		const productImage = editForm.productImage;
-    		const productQuantity = editForm.productQuantity;
-    		const productCost = editForm.productCost;
-    		const categoryId = editForm.categoryId;
-    		const brandId = editForm.brandId;
-    		const productDescription = editForm.productDescription;
+    // Hiển thị ảnh preview (ảnh cũ lúc đầu)
+    editProductImagePreview.src = oldImage || '#';
 
-    		// Hàm kiểm tra URL
-    		function isValidURL(str) {
-  				return /^(https?:\/\/.+\.(jpg|jpeg|png|gif|webp)|\/.+\.(jpg|jpeg|png|gif|webp)|\.\/.+\.(jpg|jpeg|png|gif|webp)|\.\.\/.+\.(jpg|jpeg|png|gif|webp)|[^\/]+\.(jpg|jpeg|png|gif|webp))$/i.test(str.trim());
-			}
+    // Các trường khác
+    document.getElementById("editProductQuantity").value = button.getAttribute("data-quantity");
+    document.getElementById("editProductCost").value = button.getAttribute("data-cost");
+    document.getElementById("editCategoryId").value = button.getAttribute("data-category");
+    document.getElementById("editBrandId").value = button.getAttribute("data-brand");
+    document.getElementById("editProductDescription").value = button.getAttribute("data-description");
+  });
 
+  // Khi chọn file mới, cập nhật ảnh preview
+  editProductImageInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        editProductImagePreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // Nếu không chọn file thì trả về ảnh cũ
+      editProductImagePreview.src = editOldImageInput.value || '#';
+    }
+  });
 
-    		// Reset lỗi cũ
-    		[productName, productImage, productQuantity, productCost, categoryId, brandId, productDescription].forEach(input => {
-      			input.classList.remove("is-invalid");
-      			const feedback = input.parentElement.querySelector(".invalid-feedback");
-      			if (feedback) feedback.textContent = "";
-    		});
+  // Validate form khi submit
+  editForm.addEventListener("submit", function (e) {
+    let isValid = true;
 
-    		// Kiểm tra tên sản phẩm
-    		if (productName.value.trim() === "") {
-     			isValid = false;
-      			productName.classList.add("is-invalid");
-      			productName.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng nhập tên sản phẩm.";
-   			}		
+    // Các input
+    const productName = editForm.productName;
+    const productQuantity = editForm.productQuantity;
+    const productCost = editForm.productCost;
+    const categoryId = editForm.categoryId;
+    const brandId = editForm.brandId;
 
-    		// Kiểm tra link ảnh
-    		if (productImage.value.trim() === "") {
-      			isValid = false;
-      			productImage.classList.add("is-invalid");
-      			productImage.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng nhập link ảnh sản phẩm.";
-    		} else if (!isValidURL(productImage.value.trim())) {
-      			isValid = false;
-      			productImage.classList.add("is-invalid");
-      			productImage.parentElement.querySelector(".invalid-feedback").textContent = "Link ảnh không hợp lệ.";
-    		}
+    // Reset lỗi cũ
+    [productName, productQuantity, productCost, categoryId, brandId].forEach(input => {
+      input.classList.remove("is-invalid");
+      const feedback = input.parentElement.querySelector(".invalid-feedback");
+      if (feedback) feedback.textContent = "";
+    });
 
-    		// Kiểm tra số lượng (>=0)
-    		if (productQuantity.value.trim() === "" || isNaN(productQuantity.value) || Number(productQuantity.value) < 0) {
-     			isValid = false;
-      			productQuantity.classList.add("is-invalid");
-      			productQuantity.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng nhập số lượng hợp lệ (không âm).";
-    		}
+    // Kiểm tra tên sản phẩm
+    if (productName.value.trim() === "") {
+      isValid = false;
+      productName.classList.add("is-invalid");
+      productName.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng nhập tên sản phẩm.";
+    }
 
-    		// Kiểm tra giá bán (>0)
-    		if (productCost.value.trim() === "" || isNaN(productCost.value) || Number(productCost.value) <= 0) {
-      			isValid = false;
-      			productCost.classList.add("is-invalid");
-      			productCost.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng nhập giá bán hợp lệ (lớn hơn 0).";
-   			}
+    // Kiểm tra số lượng (>=0)
+    if (productQuantity.value.trim() === "" || isNaN(productQuantity.value) || Number(productQuantity.value) < 0) {
+      isValid = false;
+      productQuantity.classList.add("is-invalid");
+      productQuantity.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng nhập số lượng hợp lệ (không âm).";
+    }
 
-    		// Kiểm tra danh mục
-    		if (categoryId.value.trim() === "") {
-      			isValid = false;
-      			categoryId.classList.add("is-invalid");
-      			categoryId.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng chọn danh mục sản phẩm.";
-   		 	}
+    // Kiểm tra giá bán (>0)
+    if (productCost.value.trim() === "" || isNaN(productCost.value) || Number(productCost.value) <= 0) {
+      isValid = false;
+      productCost.classList.add("is-invalid");
+      productCost.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng nhập giá bán hợp lệ (lớn hơn 0).";
+    }
 
-    		// Kiểm tra nhà cung cấp
-    		if (brandId.value.trim() === "") {
-      			isValid = false;
-      			brandId.classList.add("is-invalid");
-      		brandId.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng chọn nhà cung cấp.";
-    		}
+    // Kiểm tra danh mục
+    if (categoryId.value.trim() === "") {
+      isValid = false;
+      categoryId.classList.add("is-invalid");
+      categoryId.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng chọn danh mục sản phẩm.";
+    }
 
-    		// Không submit nếu có lỗi
-    		if (!isValid) {
-      			e.preventDefault();
-    		}
-  		});
+    // Kiểm tra nhà cung cấp
+    if (brandId.value.trim() === "") {
+      isValid = false;
+      brandId.classList.add("is-invalid");
+      brandId.parentElement.querySelector(".invalid-feedback").textContent = "Vui lòng chọn nhà cung cấp.";
+    }
 
-  		// Reset form khi đóng modal
-  		editModal.addEventListener("hidden.bs.modal", function () {
-    		editForm.reset();
-    		[editForm.productName, editForm.productImage, editForm.productQuantity, editForm.productCost, editForm.categoryId, editForm.brandId, editForm.productDescription].forEach(input => {
-      			input.classList.remove("is-invalid");
-      			const feedback = input.parentElement.querySelector(".invalid-feedback");
-      			if (feedback) feedback.textContent = "";
-    		});
-  		});
-	});
-	</script>
+    // Không submit nếu có lỗi
+    if (!isValid) {
+      e.preventDefault();
+    }
+  });
+
+  // Reset form khi đóng modal
+  editModal.addEventListener("hidden.bs.modal", function () {
+    editForm.reset();
+    // Reset ảnh preview về rỗng hoặc mặc định
+    editProductImagePreview.src = '#';
+
+    [editForm.productName, editForm.productQuantity, editForm.productCost, editForm.categoryId, editForm.brandId].forEach(input => {
+      input.classList.remove("is-invalid");
+      const feedback = input.parentElement.querySelector(".invalid-feedback");
+      if (feedback) feedback.textContent = "";
+    });
+  });
+});
+</script>
+
 
 	<!-- JS cho chức năng xóa chi tiết -->
 	<script>
@@ -828,6 +921,7 @@
     	}
   		});
 	</script>
+
 
 
 

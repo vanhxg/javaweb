@@ -6,6 +6,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,43 +27,74 @@ import model.Customer;
  * Servlet implementation class userController
  */
 
-@WebServlet(name = "CustomerServlet", urlPatterns = {"/quanly-tk", "/addCustomer", "/editCustomer", "/deleteCustomer"},loadOnStartup = 1)
+@WebServlet(name = "CustomerServlet", urlPatterns = {"/quanly-tk", "/addCustomer", "/editCustomer", "/deleteCustomer", "/trash", "/restoreCustomer", "/hardDeleteCustomer"}, loadOnStartup = 1)
 
 public class userController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private ScheduledExecutorService scheduler;
        
   private CustomerDAO customerDao;
   public void init() {
 	  customerDao = new CustomerDAO(); 
 	  customerDao.encryptExistingPasswords();
+	  scheduler = Executors.newSingleThreadScheduledExecutor();
+      scheduler.scheduleAtFixedRate(() -> {
+          int deletedCount = customerDao.autoDeleteOldRecords();
+          System.out.println("Auto xóa cứng " + deletedCount + " bản ghi");
+      }, 0, 24, TimeUnit.HOURS);
   }
     public userController() {
         super();
        
     }
+    public void destroy() {
+        if (scheduler != null) {
+            scheduler.shutdownNow();
+        }
+    }
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
-		
-		HttpSession session = request.getSession();
-		String msg = (String) session.getAttribute("message");
-		if(msg != null) {
-		    request.setAttribute("message", msg);
-		    session.removeAttribute("message"); // xóa luôn tại đây
+	    response.setContentType("text/html;charset=UTF-8");
+
+	    HttpSession session = request.getSession();
+	    String msg = (String) session.getAttribute("message");
+	    if (msg != null) {
+	        request.setAttribute("message", msg);
+	        session.removeAttribute("message");
+	    }
+
+	    String action = request.getParameter("action");
+	    if (action == null) action = "";
+
+	    switch (action) {
+	        case "view":
+	            // Quay lại danh sách tài khoản chưa xóa
+	            ArrayList<Customer> listCustomer = customerDao.selectAll(); // is_deleted = false
+	            request.setAttribute("listCustomer", listCustomer);
+	            RequestDispatcher viewDispatcher = request.getRequestDispatcher("/dashboard/customer.jsp");
+	            viewDispatcher.forward(request, response);
+	            break;
+
+	        default:
+	            // Mặc định xử lý theo URI như trước
+	            String uri = request.getRequestURI();
+
+	            if (uri.contains("/trash")) {
+	                ArrayList<Customer> deletedCustomers = customerDao.selectAllDeleted();
+	                request.setAttribute("deletedCustomers", deletedCustomers);
+	                RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/trash.jsp");
+	                dispatcher.forward(request, response);
+	            } else {
+	                ArrayList<Customer> list = customerDao.selectAll();
+	                request.setAttribute("listCustomer", list);
+	                RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/customer.jsp");
+	                dispatcher.forward(request, response);
+	            }
+	            break;
+	    }
 		}
-		
-		
-		ArrayList<Customer> listCustomer = customerDao.selectAll();
-		
-		// 1. Gửi request lên server:
-		request.setAttribute("listCustomer", listCustomer);
-		
-		// 2. Chuyển dữ liệu từ server lên trang giao diện brand.jsp:
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/customer.jsp");
-		dispatcher.forward(request, response);
-	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -83,6 +117,12 @@ public class userController extends HttpServlet {
                 break;
             case "delete":
 				handleDelete(request, response);
+                break;
+            case "restore":
+                handleRestore(request, response);
+                break;
+            case "hardDelete":
+                handleHardDelete(request, response);
                 break;
             default:
                 // Nếu không có action hợp lệ, quay lại trang danh sách
@@ -135,9 +175,6 @@ public class userController extends HttpServlet {
 	        // Chuyển hướng về trang danh sách sau khi thêm
 	        response.sendRedirect("quanly-tk");
 	    }
-
-	   
-	
 	    private void handleEdit(HttpServletRequest request, HttpServletResponse response) 
 	            throws ServletException, IOException {
 	    	String id = request.getParameter("customerId");
@@ -179,16 +216,36 @@ public class userController extends HttpServlet {
 
 	    private void handleDelete(HttpServletRequest request, HttpServletResponse response) 
 	            throws ServletException, IOException {
-	    	String id = request.getParameter("customerId");
-	        
-	        Customer customer = new Customer();
-	        customer.setCustomerId(id);
-	        
-	        int result = customerDao.delete(customer);
-	        if (result > 0) {
-	            request.getSession().setAttribute("message", "Xóa tài khoản thành công!");
-	        }
+	    	 String id = request.getParameter("customerId");
 
-	        response.sendRedirect("quanly-tk");
+	    	    int result = customerDao.softDelete(id); // gọi hàm xóa mềm
+	    	    if (result > 0) {
+	    	        request.getSession().setAttribute("message", "Tài khoản đã được đưa vào thùng rác!");
+	    	    } else {
+	    	        request.getSession().setAttribute("message", "Không thể xóa tài khoản!");
+	    	    }
+
+	    	    response.sendRedirect("quanly-tk");
+	    }
+	    private void handleRestore(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	        String id = request.getParameter("customerId");
+	        int result = customerDao.restore(id);
+	        if (result > 0) {
+	            request.getSession().setAttribute("message", "Khôi phục tài khoản thành công!");
+	        } else {
+	            request.getSession().setAttribute("message", "Khôi phục thất bại!");
+	        }
+	        response.sendRedirect("trash");
+	    }
+
+	    private void handleHardDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	        String id = request.getParameter("customerId");
+	        int result = customerDao.hardDelete(id);
+	        if (result > 0) {
+	            request.getSession().setAttribute("message", "Xóa tài khoản vĩnh viễn thành công!");
+	        } else {
+	            request.getSession().setAttribute("message", "Xóa vĩnh viễn thất bại!");
+	        }
+	        response.sendRedirect("trash");
 	    }
 	}
