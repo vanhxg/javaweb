@@ -95,12 +95,12 @@ public class categoryController extends HttpServlet {
         Category category = new Category(id, name);
         
         int result = categoryDao.update(category);
+        
         if (result > 0) {
             request.getSession().setAttribute("message", "Sửa danh mục thành công!");
         } else {
             request.getSession().setAttribute("message", "Sửa danh mục thất bại!");
         }
-
         response.sendRedirect("quanly-danhmuc");
     }
     

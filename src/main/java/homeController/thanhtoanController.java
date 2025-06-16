@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import database.CustomerDAO;
 import database.ProductDAO;
@@ -50,7 +51,10 @@ public class thanhtoanController extends HttpServlet {
                 response.sendRedirect("notfound.jsp");
                 return;
             }
-
+         // 🟢 Gửi product vào session để momo-callback sử dụng
+            HttpSession session = request.getSession();
+            session.setAttribute("product", product); 
+            
             // Gửi thông tin sản phẩm tới JSP
             request.setAttribute("product", product);
             int amount = product.getProductCost() * quantity;

@@ -142,18 +142,28 @@
 									xử lý ngay lập tức. Chúng tôi sẽ gửi cập nhật qua email khi đơn
 									hàng của bạn được xử lý.</p>
 							</div>
-	
+
 							<!-- Action buttons -->
 							<div class="action-area" data-aos="fade-up">
 								<div class="row g-3">
-									<div class="col-md-6">
-										<a href="${pageContext.request.contextPath}/xuathoadon" class="btn btn-account" target="_blank"> <span>Xuất hóa
-												đơn</span> <i class="bi bi-arrow-right"></i>
-										</a>									
+									<div class="col-md-6 d-flex gap-3 flex-wrap">
+										<a
+											href="${pageContext.request.contextPath}/xuathoadon?type=pdf"
+											class="btn btn-outline-danger d-flex align-items-center gap-2"
+											target="_blank"> <i
+											class="bi bi-file-earmark-pdf-fill fs-5"></i> Xuất hóa đơn
+											(PDF)
+										</a> <a
+											href="${pageContext.request.contextPath}/xuathoadon?type=docx"
+											class="btn btn-outline-primary d-flex align-items-center gap-2"
+											target="_blank"> <i
+											class="bi bi-file-earmark-word-fill fs-5"></i> Xuất hóa đơn
+											(Word)
+										</a>
 									</div>
+
 								</div>
 							</div>
-
 
 						</div>
 					</div>

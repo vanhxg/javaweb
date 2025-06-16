@@ -78,7 +78,7 @@
 	<main class="main">
 		<h3 class="text-primary mt-4">🔒 Đang xử lý thanh toán qua
 			Momo...</h3>
-		<img src="${pageContext.request.contextPath}/images/momo-qr-demo.png"
+		<img src="https://th.bing.com/th/id/OIP.cjWdNvnV9ZyyQfDqCbU7rQHaIy?r=0&rs=1&pid=ImgDetMain&cb=idpwebpc1"
 			width="200" class="my-3">
 		<p class="text-muted">Vui lòng mở ứng dụng Momo và quét mã để hoàn
 			tất thanh toán.</p>
@@ -96,9 +96,9 @@
 		
 <form action="${pageContext.request.contextPath}/momo-callback" method="post" class="mt-4">
 			<input type="hidden" name="orderId" value="${orderId}"> <input
-				type="hidden" name="productId" value="${product.id}"> <input
+				type="hidden" name="productId" value="${product.productId}"> <input
 				type="hidden" name="quantity" value="1"> <input
-				type="hidden" name="price" value="${product.price}">
+				type="hidden" name="price" value="${product.productCost}">
 			<button class="btn btn-success" type="submit">Tôi đã thanh
 				toán</button>
 		</form>

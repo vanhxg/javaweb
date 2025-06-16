@@ -55,14 +55,17 @@ public class momocallbackController extends HttpServlet {
     	        order.setOrderState("Chờ xác nhận");
     	        order.setPaymentMethod("COD"); // hoặc gì đó nếu đặt hàng không thanh toán online
     	    }
-
+    	    
     	    DetailOrder detail = new DetailOrder();
     	    detail.setDetailOrderId(UUID.randomUUID().toString());
     	    detail.setOrder(order);
     	    detail.setProduct(product);
+    	    detail.setProductName(product.getProductName()); 
+    	    detail.setProductImage(product.getProductImage()); 
     	    detail.setQuantityOrder(quantity);
     	    detail.setTotalPrice(quantity * price);
 
+    	    
     	    ArrayList<DetailOrder> details = new ArrayList<>();
     	    details.add(detail);
     	    order.setOrderDetails(details);

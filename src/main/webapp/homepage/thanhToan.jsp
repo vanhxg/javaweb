@@ -130,7 +130,9 @@
 						<div class="checkout-forms" data-aos="fade-up"
 							data-aos-delay="150">
 							<form class="checkout-form-element" id="checkout-form" action="${pageContext.request.contextPath}/momo-callback" method="post">
-
+									<input type="hidden" name="quantity" value="${quantity}">
+    								<input type="hidden" name="price" value="${amount}">
+    
 								<!-- Step 1: Customer Information -->
 								<div class="checkout-form active" data-form="1">
 									<div class="form-header">
